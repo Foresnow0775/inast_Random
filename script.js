@@ -2,20 +2,33 @@ const imageList = document.getElementById("imageList");
 const allImagesContainer = document.getElementById("allImages");
 const selectedImagesContainer = document.getElementById("selectedImages");
 const notSelectedImagesContainer = document.getElementById("notSelectedImages");
-const imageSelect = document.getElementById("imageSelect");
+const select = document.getElementById("imageSelect");
 const addImageButton = document.getElementById("addImageButton");
 const addAllButton = document.getElementById("addAllButton");
 const countInput = document.getElementById("countInput");
 const showButton = document.getElementById("showButton");
 
-// 初期画像リスト
-let allImages = [
-  "images/sample1.jpg",
-  "images/sample2.jpg",
-  "images/sample3.jpg",
-  "images/sample4.jpg",
-  "images/sample5.jpg"
-];
+fetch("https://raw.githubusercontent.com/Foresnow0775/inast_Random/refs/heads/main/images.json")
+  .then(response => response.json())
+  .then(images => {
+    images.forEach(path => {
+      const name = path.split("/").pop(); // ファイル名だけ取り出す
+
+      // プルダウンに追加
+      const option = document.createElement("option");
+      option.value = path;
+      option.textContent = name;
+      option.setAttribute("data-name", name);
+      select.appendChild(option);
+
+      // 全画像表示用にも追加
+      const img = document.createElement("img");
+      img.src = path;
+      img.alt = name;
+      allImagesContainer.appendChild(img);
+    });
+  })
+  .catch(err => console.error("画像一覧の取得に失敗:", err));
 
 // =======================
 // 描画関数
