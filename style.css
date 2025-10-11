@@ -1,0 +1,184 @@
+body {
+  font-family: "Arial", sans-serif;
+  background: #f5f5f5;
+  margin: 0;
+  padding: 0px 20px 20px 20px; /* 上だけ10pxに */
+}
+
+h1 {
+  text-align: center;
+}
+
+/* レイアウト */
+.main-container {
+  display: grid;
+  grid-template-columns: 40% 60%;
+  gap: 20px;
+}
+
+/* 左パネル */
+.left-panel {
+  background: white;
+  border-radius: 10px;
+  padding: 15px;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+  display: flex;
+  flex-direction: column;
+  height: 90vh;
+}
+
+/* 左リストカード型グリッド */
+#imageList {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr); /* 横4列 */
+  gap: 10px;
+  padding: 0;
+  margin: 0;
+  list-style: none;
+  overflow-y: auto; /* 高さ超えたら縦スクロール */
+}
+
+/* 各カード */
+#imageList li {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-between;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  padding: 5px;
+  box-sizing: border-box;
+  width: 100%;
+  aspect-ratio: 1 / 1; /* 正方形 */
+  font-size: 12px;
+  text-align: center;
+  cursor: pointer;
+  background: #fff;
+  box-shadow: 0 1px 4px rgba(0,0,0,0.1);
+}
+
+#imageList li:last-child {
+  border-bottom: none;
+}
+
+/* カード上部：画像 */
+#imageList li img {
+  width: 80%;
+  height: auto;
+  object-fit: cover;
+  border-radius: 6px;
+  margin-bottom: 5px;
+}
+
+/* カード下部：画像名 */
+#imageList li span {
+  word-break: break-word;
+  font-size: 12px;
+}
+
+/* 追加ボタン */
+.list-controls {
+  display: flex;
+  gap: 8px;
+  justify-content: center;
+  margin-top: 10px;
+}
+
+.list-controls select {
+  flex-grow: 1;
+}
+
+.list-controls button {
+  background: #0078d7;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  padding: 6px 10px;
+  cursor: pointer;
+}
+
+.list-controls button:hover {
+  background: #005fa3;
+}
+
+/* 右側 */
+.right-panel {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+/* 全画像 + ランダム表示 */
+.all-images-section {
+  background: white;
+  border-radius: 10px;
+  padding: 15px;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+}
+
+.all-images-section .controls {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 10px;
+}
+
+#countInput {
+  width: 60px;
+  padding: 4px;
+  text-align: center;
+}
+
+#showButton {
+  background: #0078d7;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  padding: 6px 12px;
+  cursor: pointer;
+}
+
+#showButton:hover {
+  background: #005fa3;
+}
+
+/* 画像グリッド */
+.image-grid {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 8px;
+}
+
+.image-grid img {
+  width: 100px;
+  height: 100px;
+  border-radius: 6px;
+  object-fit: cover;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.15);
+  transition: transform 0.2s;
+}
+
+.image-grid img:hover {
+  transform: scale(1.05);
+}
+
+.image-grid.small img {
+  width: 80px;
+  height: 80px;
+}
+
+/* 選択結果 */
+.result-section {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 20px;
+}
+
+.selected-area, .not-selected-area {
+  background: white;
+  border-radius: 10px;
+  padding: 10px;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+}
