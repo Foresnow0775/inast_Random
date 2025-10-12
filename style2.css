@@ -1,0 +1,192 @@
+/* =======================
+   タブ2用CSS（引退選手削除版）
+   ======================= */
+.main-container2 {
+  display: grid;
+  grid-template-columns: 40% 60%;
+  gap: 20px;
+}
+
+.left-panel2 {
+  background: white;
+  border-radius: 10px;
+  padding: 15px;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+  display: flex;
+  flex-direction: column;
+  height: 85vh;
+}
+
+.imageList2 {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 10px;
+  padding: 0;
+  margin: 0;
+  list-style: none;
+  overflow-y: auto;
+}
+
+.imageList2 li {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  padding: 5px;
+  width: 90%;
+  aspect-ratio: 1 / 1;
+  font-size: 12px;
+  text-align: center;
+  cursor: pointer;
+  background: #fff;
+  box-shadow: 0 1px 4px rgba(0,0,0,0.1);
+}
+
+.imageList2 li img {
+  width: 80%;
+  height: auto;
+  object-fit: cover;
+}
+
+.imageList2 li span {
+  font-size: 12px;
+  font-weight: bold;
+  word-break: break-word;
+}
+
+.imageList2 li button {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  display: none;
+  background: rgba(255,0,0,0.8);
+  color: white;
+  border: none;
+  border-radius: 50%;
+  width: 30px;
+  height: 30px;
+  cursor: pointer;
+}
+
+.imageList2 li:hover button {
+  display: block;
+}
+
+.list-controls2 {
+  display: flex;
+  gap: 8px;
+  justify-content: center;
+  margin-top: 10px;
+}
+
+.list-controls2 select {
+  flex-grow: 1;
+}
+
+.list-controls2 button {
+  background: #0078d7;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  padding: 6px 10px;
+  cursor: pointer;
+}
+
+.list-controls2 button:hover {
+  background: #005fa3;
+}
+
+.right-panel2 {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.all-images-section2, .selected-area2 {
+  background: white;
+  border-radius: 10px;
+  padding: 15px;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+}
+
+.controls2 {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 10px;
+}
+
+.countInput2 {
+  width: 60px;
+  padding: 4px;
+  text-align: center;
+}
+
+.image-grid2 {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 8px;
+  position: relative;
+  justify-content: center;
+}
+
+.image-grid2 img {
+  width: 100px;
+  height: 100px;
+  border-radius: 6px;
+  object-fit: cover;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.15);
+  transition: transform 0.2s;
+  justify-content: center;
+}
+
+.image-grid2 img:hover {
+  transform: scale(1.05);
+}
+
+.image-grid2.small2 img {
+  width: 80px;
+  height: 80px;
+}
+
+.result-section2 {
+  display: block; /* 1カラムにして引退欄無し */
+}
+
+/* selectedImagesContainer に追加 */
+.selectedImages2 {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 8px;
+  position: relative; /* 下にボタンを置くため */
+}
+
+.selectedImages2 button.addAllBtn {
+  display: block;
+  width: 200px;
+  margin: 10px auto 0 auto; /* 上余白10px、中央 */
+  position: relative; /* flex外に配置 */
+  z-index: 10;
+}
+
+.addAllBtn {
+  display: block;
+  margin: 12px auto 0; /* 上に少しスペース、左右中央 */
+  padding: 8px 16px;
+  background: #0078d7;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  font-weight: bold;
+}
+
+.addAllBtn:hover {
+  background: #005fa3;
+}
