@@ -5,70 +5,159 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>画像ランダム分け表示</title>
   <link rel="stylesheet" href="style.css" />
+  <link rel="stylesheet" href="style2.css" />
 </head>
 <body>
-  <h1>画像ランダム分け表示</h1>
-
-  <div class="main-container">
-    <!-- 左側：画像リスト + 追加削除 -->
-    <div class="left-panel">
-      <h2>現チームメンバー</h2>
-      <ul id="imageList"></ul>
-
-      <div class="list-controls">
-        <select id="imageSelect">
-          <option value="">選手を選択してください</option>
-          <option value="images/sample1.jpg" data-name="sample1.jpg">sample1.jpg</option>
-          <option value="images/sample2.jpg" data-name="sample2.jpg">sample2.jpg</option>
-          <option value="images/sample3.jpg" data-name="sample3.jpg">sample3.jpg</option>
-          <option value="images/sample4.jpg" data-name="sample4.jpg">sample4.jpg</option>
-          <option value="images/sample5.jpg" data-name="sample5.jpg">sample5.jpg</option>
-          <option value="images/sample6.jpg" data-name="sample6.jpg">sample6.jpg</option>
-          <option value="images/sample7.jpg" data-name="sample7.jpg">sample7.jpg</option>
-          <option value="images/sample8.jpg" data-name="sample8.jpg">sample8.jpg</option>
-          <option value="images/sample9.jpg" data-name="sample9.jpg">sample9.jpg</option>
-          <option value="images/sample10.jpg" data-name="sample10.jpg">sample10.jpg</option>
-          <option value="images/sample11.jpg" data-name="sample11.jpg">sample11.jpg</option>
-          <option value="images/sample12.jpg" data-name="sample12.jpg">sample12.jpg</option>
-          <option value="images/sample13.jpg" data-name="sample13.jpg">sample13.jpg</option>
-          <option value="images/sample14.jpg" data-name="sample14.jpg">sample14.jpg</option>
-          <option value="images/sample15.jpg" data-name="sample15.jpg">sample15.jpg</option>
-          <option value="images/sample16.jpg" data-name="sample16.jpg">sample16.jpg</option>
-
-        </select>
-        <button id="addImageButton">追加</button>
-        <button id="addAllButton">全て追加</button>
-      </div>
+    <div class="tabs">
+        <button class="tab-button active" data-tab="tab1">チームメンバー</button>
+        <button class="tab-button" data-tab="tab2">加入</button>
     </div>
 
-    <!-- 右側 -->
-    <div class="right-panel">
-      <!-- 上：全画像 + ランダム表示ボタン -->
-      <div class="all-images-section">
-        <h2>選手一覧</h2>
-        <div class="controls">
-          <label for="countInput">表示枚数：</label>
-          <input type="number" id="countInput" min="1" value="1" />
-          <button id="showButton">実行</button>
-        </div>
-        <div id="allImages" class="image-grid"></div>
-      </div>
+    <div class="tab-content" id="tab1">
 
-      <!-- 下：選択結果 -->
-      <div class="result-section">
-        <div class="selected-area">
-          <h3>生存選手</h3>
-          <div id="selectedImages" class="image-grid small"></div>
-        </div>
+        <div class="main-container">
+            <!-- 左側：画像リスト + 追加削除 -->
+            <div class="left-panel">
+            <h2>現チームメンバー</h2>
+            <ul class="imageList"></ul>
 
-        <div class="not-selected-area">
-          <h3>引退選手</h3>
-          <div id="notSelectedImages" class="image-grid small"></div>
+            <div class="list-controls">
+                <select class="imageSelect">
+                <option value="">選手を選択してください</option>
+                    <option value="images/01_01_Endou_Mamoru.jpg">（1st）えんどう</option>
+                    <option value="images/01_02_Kazemaru_Ichirouta.jpg">（1st）かぜまる</option>
+                    <option value="images/01_03_Kabeyama_Heigorou.jpg">（1st）かべやま</option>
+                    <option value="images/01_04_Kageno_Jin.jpg">（1st）かげの</option>
+                    <option value="images/01_05_Kurimatsu_Teppei.jpg">（1st）くりまつ</option>
+                    <option value="images/01_06_Handa_Shinichi.jpg">（1st）はんだ</option>
+                    <option value="images/01_07_Shourinji_Ayumu.jpg">（1st）しょうりん</option>
+                    <option value="images/01_08_Shishido_Sakichi.jpg">（1st）ししど</option>
+                    <option value="images/01_09_Matsuno_Kuusuke.jpg">（1st）マックス</option>
+                    <option value="images/01_10_Gouenji_Shuuya.jpg">（1st）ごうえんじ</option>
+                    <option value="images/01_11_Someoka_Ryuugo.jpg">（1st）そめおか</option>
+                    <option value="images/01_12_Megane_Kakeru.jpg">（1st）めがね</option>
+                    <option value="images/01_13_Domon_Asuka.jpg">（1st）どもん</option>
+                    <option value="images/01_14_Kidou_Yuuto.jpg">（1st）きどう</option>
+                    <option value="images/01_16_Ichinose_Kazuya.jpg">（1st）いちのせ</option>
+
+                    <option value="images/02_01_Genda_Koujirou.jpg">（帝国）げんだ</option>
+                    <option value="images/02_02_Oono_Densuke.jpg">（帝国）だいでん</option>
+                    <option value="images/02_03_Banjou_Kazumichi.jpg">（帝国）ばんじょう</option>
+                    <option value="images/02_04_Narukami_Kenya.jpg">（帝国）なるかみ</option>
+                    <option value="images/02_05_Gojou_Masaru.jpg">（帝国）ごじょう</option>
+                    <option value="images/02_06_Henmi_Wararu.jpg">（帝国）へんみ</option>
+                    <option value="images/02_07_Sakiyama_Shuuji.jpg">（帝国）さきやま</option>
+                    <option value="images/02_08_Doumen_Shuuichirou.jpg">（帝国）どうめん</option>
+                    <option value="images/02_09_Jimon_Daiki.jpg">（帝国）じもん</option>
+                    <option value="images/02_10_Kidou_Yuuto.jpg">（帝国）きどう</option>
+                    <option value="images/02_11_Sakuma_Jirou.jpg">（帝国）さくま</option>
+                </select>
+                <button class="addImageButton">追加</button>
+                <button class="addAllButton">全て追加</button>
+            </div>
+            </div>
+
+            <!-- 右側 -->
+            <div class="right-panel">
+            <!-- 上：全画像 + ランダム表示ボタン -->
+            <div class="all-images-section">
+                <h2>選手一覧</h2>
+                <div class="controls">
+                <label for="countInput">生存人数：</label>
+                <input type="number" class="countInput" min="1" value="1" />
+                <button class="showButton">実行</button>
+                </div>
+                <div class="allImages image-grid"></div>
+            </div>
+
+            <div class="arrow-down">&#x2193;</div>
+
+            <!-- 下：選択結果 -->
+            <div class="result-section">
+                <div class="selected-area">
+                    <h3>生存選手</h3>
+                <div class="selectedImages image-grid small"></div>
+                </div>
+
+                <div class="not-selected-area">
+                    <h3>引退選手</h3>
+                <div class="notSelectedImages image-grid small"></div>
+                </div>
+            </div>
+            </div>
         </div>
-      </div>
-    </div>
   </div>
 
+    <div class="tab-content" id="tab2" style="display:none;">
+
+        <div class="main-container2">
+            <!-- 左側：画像リスト + 追加削除 -->
+            <div class="left-panel2">
+            <h2>加入候補選手</h2>
+            <ul class="imageList2"></ul>
+
+            <div class="list-controls2">
+                <select class="imageSelect2">
+                <option value="">選手を選択してください</option>
+                    <option value="images/01_01_Endou_Mamoru.jpg">（1st）えんどう</option>
+                    <option value="images/01_02_Kazemaru_Ichirouta.jpg">（1st）かぜまる</option>
+                    <option value="images/01_03_Kabeyama_Heigorou.jpg">（1st）かべやま</option>
+                    <option value="images/01_04_Kageno_Jin.jpg">（1st）かげの</option>
+                    <option value="images/01_05_Kurimatsu_Teppei.jpg">（1st）くりまつ</option>
+                    <option value="images/01_06_Handa_Shinichi.jpg">（1st）はんだ</option>
+                    <option value="images/01_07_Shourinji_Ayumu.jpg">（1st）しょうりん</option>
+                    <option value="images/01_08_Shishido_Sakichi.jpg">（1st）ししど</option>
+                    <option value="images/01_09_Matsuno_Kuusuke.jpg">（1st）マックス</option>
+                    <option value="images/01_10_Gouenji_Shuuya.jpg">（1st）ごうえんじ</option>
+                    <option value="images/01_11_Someoka_Ryuugo.jpg">（1st）そめおか</option>
+                    <option value="images/01_12_Megane_Kakeru.jpg">（1st）めがね</option>
+                    <option value="images/01_13_Domon_Asuka.jpg">（1st）どもん</option>
+                    <option value="images/01_14_Kidou_Yuuto.jpg">（1st）きどう</option>
+                    <option value="images/01_16_Ichinose_Kazuya.jpg">（1st）いちのせ</option>
+
+                    <option value="images/02_01_Genda_Koujirou.jpg">（帝国）げんだ</option>
+                    <option value="images/02_02_Oono_Densuke.jpg">（帝国）だいでん</option>
+                    <option value="images/02_03_Banjou_Kazumichi.jpg">（帝国）ばんじょう</option>
+                    <option value="images/02_04_Narukami_Kenya.jpg">（帝国）なるかみ</option>
+                    <option value="images/02_05_Gojou_Masaru.jpg">（帝国）ごじょう</option>
+                    <option value="images/02_06_Henmi_Wararu.jpg">（帝国）へんみ</option>
+                    <option value="images/02_07_Sakiyama_Shuuji.jpg">（帝国）さきやま</option>
+                    <option value="images/02_08_Doumen_Shuuichirou.jpg">（帝国）どうめん</option>
+                    <option value="images/02_09_Jimon_Daiki.jpg">（帝国）じもん</option>
+                    <option value="images/02_10_Kidou_Yuuto.jpg">（帝国）きどう</option>
+                    <option value="images/02_11_Sakuma_Jirou.jpg">（帝国）さくま</option>
+                </select>
+                <button class="addImageButton2">追加</button>
+                <button class="addAllButton2">全て追加</button>
+            </div>
+            </div>
+
+            <!-- 右側 -->
+            <div class="right-panel2">
+            <!-- 上：全画像 + ランダム表示ボタン -->
+            <div class="all-images-section2">
+                <h2>選手一覧</h2>
+                <div class="controls2">
+                <label for="countInput">加入人数：</label>
+                <input type="number" class="countInput2" min="1" value="1" />
+                <button class="showButton2">実行</button>
+                </div>
+                <div class="allImages2 image-grid2"></div>
+            </div>
+
+            <div class="arrow-down">&#x2193;</div>
+
+            <!-- 下：選択結果 -->
+            <div class="result-section2">
+                <div class="selected-area2">
+                    <h3>加入選手</h3>
+                    <div class="selectedImages2 image-grid small2"></div>
+                </div>
+            </div>
+        </div>
+  </div>
+
+  <script src="script.js"></script>
   <script src="script.js"></script>
 </body>
 </html>
