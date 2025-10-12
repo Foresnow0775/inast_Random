@@ -2,21 +2,40 @@ body {
   font-family: "Arial", sans-serif;
   background: #f5f5f5;
   margin: 0;
-  padding: 0px 20px 20px 20px; /* 上だけ10pxに */
+  padding: 0 20px 20px;
 }
 
-h1 {
-  text-align: center;
+h2{
+    font-size: 100%;
 }
 
-/* レイアウト */
+.tabs {
+  display: flex;
+  gap: 10px;
+  justify-content: center;
+  margin-bottom: 8px;
+}
+
+.tab-button {
+  padding: 10px 370px;
+  border: none;
+  border-radius: 6px;
+  background: #ddd;
+  cursor: pointer;
+  font-weight: bold;
+}
+
+.tab-button.active {
+  background: #0078d7;
+  color: white;
+}
+
 .main-container {
   display: grid;
   grid-template-columns: 40% 60%;
   gap: 20px;
 }
 
-/* 左パネル */
 .left-panel {
   background: white;
   border-radius: 10px;
@@ -24,32 +43,30 @@ h1 {
   box-shadow: 0 2px 6px rgba(0,0,0,0.1);
   display: flex;
   flex-direction: column;
-  height: 90vh;
+  height: 85vh;
 }
 
-/* 左リストカード型グリッド */
-#imageList {
+.imageList {
   display: grid;
-  grid-template-columns: repeat(4, 1fr); /* 横4列 */
+  grid-template-columns: repeat(4, 1fr);
   gap: 10px;
   padding: 0;
   margin: 0;
   list-style: none;
-  overflow-y: auto; /* 高さ超えたら縦スクロール */
+  overflow-y: auto;
 }
 
-/* 各カード */
-#imageList li {
+.imageList li {
+  position: relative;
   display: flex;
   flex-direction: column;
   align-items: center;
-  justify-content: space-between;
+  justify-content: center;
   border: 1px solid #ddd;
   border-radius: 8px;
   padding: 5px;
-  box-sizing: border-box;
-  width: 100%;
-  aspect-ratio: 1 / 1; /* 正方形 */
+  width: 90%;
+  aspect-ratio: 1 / 1;
   font-size: 12px;
   text-align: center;
   cursor: pointer;
@@ -57,26 +74,37 @@ h1 {
   box-shadow: 0 1px 4px rgba(0,0,0,0.1);
 }
 
-#imageList li:last-child {
-  border-bottom: none;
-}
-
-/* カード上部：画像 */
-#imageList li img {
+.imageList li img {
   width: 80%;
   height: auto;
   object-fit: cover;
-  border-radius: 6px;
-  margin-bottom: 5px;
 }
 
-/* カード下部：画像名 */
-#imageList li span {
-  word-break: break-word;
+.imageList li span {
   font-size: 12px;
+  font-weight: bold;
+  word-break: break-word;
 }
 
-/* 追加ボタン */
+.imageList li button {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  display: none;
+  background: rgba(255,0,0,0.8);
+  color: white;
+  border: none;
+  border-radius: 50%;
+  width: 30px;
+  height: 30px;
+  cursor: pointer;
+}
+
+.imageList li:hover button {
+  display: block;
+}
+
 .list-controls {
   display: flex;
   gap: 8px;
@@ -101,49 +129,32 @@ h1 {
   background: #005fa3;
 }
 
-/* 右側 */
 .right-panel {
   display: flex;
   flex-direction: column;
   gap: 20px;
 }
 
-/* 全画像 + ランダム表示 */
-.all-images-section {
+.all-images-section, .selected-area, .not-selected-area {
   background: white;
   border-radius: 10px;
   padding: 15px;
   box-shadow: 0 2px 6px rgba(0,0,0,0.1);
 }
 
-.all-images-section .controls {
+.controls {
   display: flex;
   justify-content: center;
   align-items: center;
   gap: 10px;
-  margin-bottom: 10px;
 }
 
-#countInput {
+.countInput {
   width: 60px;
   padding: 4px;
   text-align: center;
 }
 
-#showButton {
-  background: #0078d7;
-  color: white;
-  border: none;
-  border-radius: 6px;
-  padding: 6px 12px;
-  cursor: pointer;
-}
-
-#showButton:hover {
-  background: #005fa3;
-}
-
-/* 画像グリッド */
 .image-grid {
   display: flex;
   flex-wrap: wrap;
@@ -169,16 +180,14 @@ h1 {
   height: 80px;
 }
 
-/* 選択結果 */
+.arrow-down {
+  font-size: 3rem;         /* 矢印サイズ */
+  text-align: center;      /* 横中央に配置 */
+  color: #0078d7;          /* 好きな色 */
+}
+
 .result-section {
   display: grid;
   grid-template-columns: 1fr 1fr;
   gap: 20px;
-}
-
-.selected-area, .not-selected-area {
-  background: white;
-  border-radius: 10px;
-  padding: 10px;
-  box-shadow: 0 2px 6px rgba(0,0,0,0.1);
 }
