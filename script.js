@@ -5,193 +5,275 @@ const tabButtons = document.querySelectorAll(".tab-button");
 const tabContents = document.querySelectorAll(".tab-content");
 
 function switchTab(targetId) {
-    tabButtons.forEach(b => b.classList.remove("active"));
-    tabButtons.forEach(b => { if(b.dataset.tab === targetId) b.classList.add("active"); });
+  tabButtons.forEach(b => b.classList.remove("active"));
+  tabButtons.forEach(b => {
+    if (b.dataset.tab === targetId) b.classList.add("active");
+  });
 
-    tabContents.forEach(tc => {
-        tc.style.display = tc.id === targetId ? "block" : "none";
-    });
+  tabContents.forEach(tc => {
+    tc.style.display = tc.id === targetId ? "block" : "none";
+  });
 }
 
 tabButtons.forEach(btn => {
-    btn.addEventListener("click", () => switchTab(btn.dataset.tab));
+  btn.addEventListener("click", () => switchTab(btn.dataset.tab));
 });
 
 // =======================
-// 共通初期化関数（POPUP削除版）
+// 共通初期化関数
 // =======================
 function setupTab(tabElement, enableNotSelected = true) {
-    const imageList = tabElement.querySelector(".imageList, .imageList2");
-    const allImagesContainer = tabElement.querySelector(".allImages, .allImages2");
-    const selectedImagesContainer = tabElement.querySelector(".selectedImages, .selectedImages2");
-    const notSelectedImagesContainer = enableNotSelected ? tabElement.querySelector(".notSelectedImages, .notSelectedImages2") : null;
-    const imageSelect = tabElement.querySelector(".imageSelect, .imageSelect2");
-    const addImageButton = tabElement.querySelector(".addImageButton, .addImageButton2");
-    const addAllButton = tabElement.querySelector(".addAllButton, .addAllButton2");
-    const countInput = tabElement.querySelector(".countInput, .countInput2");
-    const showButton = tabElement.querySelector(".showButton, .showButton2");
+  const imageList = tabElement.querySelector(".imageList, .imageList2");
+  const allImagesContainer = tabElement.querySelector(".allImages, .allImages2");
+  const selectedImagesContainer = tabElement.querySelector(".selectedImages, .selectedImages2");
+  const notSelectedImagesContainer = enableNotSelected
+    ? tabElement.querySelector(".notSelectedImages, .notSelectedImages2")
+    : null;
+  const imageSelect = tabElement.querySelector(".imageSelect, .imageSelect2");
+  const addImageButton = tabElement.querySelector(".addImageButton, .addImageButton2");
+  const addAllButton = tabElement.querySelector(".addAllButton, .addAllButton2");
+  const countInput = tabElement.querySelector(".countInput, .countInput2");
+  const showButton = tabElement.querySelector(".showButton, .showButton2");
 
-    let allImages = [];
+  let allImages = [];
 
-    function renderListAndAllImages() {
-        // 左リスト描画
-        imageList.innerHTML = "";
-        allImages.forEach((src, index) => {
-            const li = document.createElement("li");
-            li.draggable = true;
-            li.dataset.index = index;
+  // 🧩 全optionデータを保持しておく（検索で壊れないように）
+  const allOptionsData = Array.from(imageSelect.options)
+    .filter(opt => opt.value)
+    .map(opt => ({ value: opt.value, text: opt.textContent }));
 
-            const img = document.createElement("img");
-            img.src = src;
+  function renderListAndAllImages() {
+    imageList.innerHTML = "";
+    allImages.forEach((src, index) => {
+      const li = document.createElement("li");
+      li.draggable = true;
+      li.dataset.index = index;
 
-            const option = Array.from(imageSelect.options).find(opt => opt.value === src);
-            const displayName = option ? option.textContent : src.split("/").pop();
+      const img = document.createElement("img");
+      img.src = src;
 
-            const name = document.createElement("span");
-            name.textContent = displayName;
+      const optionData = allOptionsData.find(opt => opt.value === src);
+      const displayName = optionData ? optionData.text : src.split("/").pop();
 
-            li.appendChild(img);
-            li.appendChild(name);
+      const name = document.createElement("span");
+      name.textContent = displayName;
 
-            // 削除ボタン
-            const removeBtn = document.createElement("button");
-            removeBtn.textContent = "❌";
-            removeBtn.addEventListener("click", () => {
-                allImages.splice(index, 1);
-                renderListAndAllImages();
-            });
-            li.appendChild(removeBtn);
+      li.appendChild(img);
+      li.appendChild(name);
 
-            // ドラッグ&ドロップ
-            li.addEventListener("dragstart", e => {
-                e.dataTransfer.setData("text/plain", index);
-                e.dataTransfer.effectAllowed = "move";
-            });
-            li.addEventListener("dragover", e => {
-                e.preventDefault();
-                const rect = li.getBoundingClientRect();
-                const offset = e.clientY - rect.top;
-                li.style.borderTop = offset < rect.height / 2 ? "2px solid red" : "";
-                li.style.borderBottom = offset >= rect.height / 2 ? "2px solid red" : "";
-            });
-            li.addEventListener("dragleave", () => {
-                li.style.borderTop = "";
-                li.style.borderBottom = "";
-            });
-            li.addEventListener("drop", e => {
-                e.preventDefault();
-                li.style.borderTop = "";
-                li.style.borderBottom = "";
-                const draggedIndex = parseInt(e.dataTransfer.getData("text/plain"));
-                let targetIndex = parseInt(li.dataset.index);
-                const rect = li.getBoundingClientRect();
-                if (e.clientY - rect.top >= rect.height / 2) targetIndex += 1;
-                if (draggedIndex === targetIndex || draggedIndex + 1 === targetIndex) return;
-                const draggedItem = allImages[draggedIndex];
-                allImages.splice(draggedIndex, 1);
-                if (targetIndex > allImages.length) targetIndex = allImages.length;
-                allImages.splice(targetIndex, 0, draggedItem);
-                renderListAndAllImages();
-            });
+      const removeBtn = document.createElement("button");
+      removeBtn.textContent = "❌";
+      removeBtn.addEventListener("click", () => {
+        allImages.splice(index, 1);
+        renderListAndAllImages();
+      });
+      li.appendChild(removeBtn);
 
-            imageList.appendChild(li);
-        });
+      // ドラッグ＆ドロップ並び替え
+      li.addEventListener("dragstart", e => {
+        e.dataTransfer.setData("text/plain", index);
+        e.dataTransfer.effectAllowed = "move";
+      });
+      li.addEventListener("dragover", e => {
+        e.preventDefault();
+        const rect = li.getBoundingClientRect();
+        const offset = e.clientY - rect.top;
+        li.style.borderTop = offset < rect.height / 2 ? "2px solid red" : "";
+        li.style.borderBottom = offset >= rect.height / 2 ? "2px solid red" : "";
+      });
+      li.addEventListener("dragleave", () => {
+        li.style.borderTop = "";
+        li.style.borderBottom = "";
+      });
+      li.addEventListener("drop", e => {
+        e.preventDefault();
+        li.style.borderTop = "";
+        li.style.borderBottom = "";
+        const draggedIndex = parseInt(e.dataTransfer.getData("text/plain"));
+        let targetIndex = parseInt(li.dataset.index);
+        const rect = li.getBoundingClientRect();
+        if (e.clientY - rect.top >= rect.height / 2) targetIndex += 1;
+        if (draggedIndex === targetIndex || draggedIndex + 1 === targetIndex) return;
+        const draggedItem = allImages[draggedIndex];
+        allImages.splice(draggedIndex, 1);
+        if (targetIndex > allImages.length) targetIndex = allImages.length;
+        allImages.splice(targetIndex, 0, draggedItem);
+        renderListAndAllImages();
+      });
 
-        // 右上全画像
-        allImagesContainer.innerHTML = "";
-        allImages.forEach(src => {
-            const img = document.createElement("img");
-            img.src = src;
-            allImagesContainer.appendChild(img);
+      imageList.appendChild(li);
+    });
+
+    allImagesContainer.innerHTML = "";
+    allImages.forEach(src => {
+      const img = document.createElement("img");
+      img.src = src;
+      allImagesContainer.appendChild(img);
+    });
+  }
+
+  // =======================
+  // 検索機能付き select
+  // =======================
+  const wrapper = document.createElement("div");
+  wrapper.style.position = "relative";
+  imageSelect.parentNode.insertBefore(wrapper, imageSelect);
+  wrapper.appendChild(imageSelect);
+
+  const input = document.createElement("input");
+  input.type = "text";
+  input.placeholder = "選手名を入力して検索...";
+  input.style.width = "100%";
+  input.style.padding = "6px";
+  input.style.marginBottom = "5px";
+  input.style.border = "1px solid #ccc";
+  input.style.borderRadius = "6px";
+  input.style.boxSizing = "border-box";
+  wrapper.insertBefore(input, imageSelect);
+
+  imageSelect.style.width = "100%";
+  imageSelect.style.marginTop = "5px";
+
+  function updateSelect(filter = "") {
+    imageSelect.innerHTML = "";
+    const defaultOption = document.createElement("option");
+    defaultOption.value = "";
+    defaultOption.textContent = "選手を選択してください";
+    imageSelect.appendChild(defaultOption);
+
+    allOptionsData.forEach(({ value, text }) => {
+      if (text.toLowerCase().includes(filter.toLowerCase())) {
+        const opt = document.createElement("option");
+        opt.value = value;
+        opt.textContent = text;
+        imageSelect.appendChild(opt);
+      }
+    });
+  }
+
+  input.addEventListener("input", () => {
+    updateSelect(input.value);
+    if (imageSelect.options.length > 1) imageSelect.selectedIndex = 1;
+  });
+  input.addEventListener("focus", () => updateSelect());
+  updateSelect();
+
+  // =======================
+  // ボタン動作
+  // =======================
+  function addImageByValue(value) {
+    if (!value) return;
+    if (!allImages.includes(value)) allImages.push(value);
+    renderListAndAllImages();
+  }
+
+  addImageButton.addEventListener("click", () => {
+    addImageByValue(imageSelect.value);
+  });
+
+  addAllButton.addEventListener("click", () => {
+    const visibleOptions = Array.from(imageSelect.options)
+      .map(opt => opt.value)
+      .filter(v => v);
+    visibleOptions.forEach(v => addImageByValue(v));
+  });
+
+    let deleteAllButton = null;
+    if (!enableNotSelected) {
+        deleteAllButton = document.createElement("button");
+        deleteAllButton.textContent = "全て削除";
+        deleteAllButton.style.marginRight = "10px";
+        deleteAllButton.style.background = "#dc3545";
+        deleteAllButton.style.color = "white";
+        deleteAllButton.style.border = "none";
+        deleteAllButton.style.borderRadius = "6px";
+        deleteAllButton.style.padding = "6px 10px";
+        deleteAllButton.style.cursor = "pointer";
+
+        // addAllButtonの左に追加
+        addAllButton.parentNode.insertBefore(deleteAllButton, addAllButton.nextSibling);
+
+        deleteAllButton.addEventListener("click", () => {
+        allImages = [];
+        renderListAndAllImages();
         });
     }
 
-    renderListAndAllImages();
+  showButton.addEventListener("click", () => {
+    const count = parseInt(countInput.value);
+    if (isNaN(count) || count <= 0) return;
+    if (count > allImages.length) return;
 
-    // 追加ボタン（POPUP削除）
-    addImageButton.addEventListener("click", () => {
-        const selectedValue = imageSelect.value;
-        if (!selectedValue) return; // alert削除
-        if (!allImages.includes(selectedValue)) allImages.push(selectedValue);
-        renderListAndAllImages();
+    const shuffled = [...allImages].sort(() => Math.random() - 0.5);
+    const selected = shuffled.slice(0, count);
+    const notSelected = enableNotSelected ? shuffled.slice(count) : [];
+
+    selectedImagesContainer.innerHTML = "";
+    selected.forEach(src => {
+      const img = document.createElement("img");
+      img.src = src;
+      selectedImagesContainer.appendChild(img);
     });
 
-    // 全追加ボタン
-    addAllButton.addEventListener("click", () => {
-        Array.from(imageSelect.options)
-             .filter(opt => opt.value)
-             .forEach(opt => { if (!allImages.includes(opt.value)) allImages.push(opt.value); });
+    // tab2のみ「チームメンバーに追加」
+    if (!enableNotSelected && selected.length > 0) {
+      const addBtn = document.createElement("button");
+      addBtn.textContent = "チームメンバーに追加";
+      addBtn.classList.add("addAllBtn");
+      addBtn.style.display = "block";
+      addBtn.style.width = "89%";
+      addBtn.style.marginTop = "10px";
+
+      addBtn.addEventListener("click", () => {
+        selected.forEach(src => tabsData["tab1"].addImageByValue(src));
+        switchTab("tab1");
+      });
+
+      selectedImagesContainer.appendChild(addBtn);
+    }
+
+    if (enableNotSelected && notSelectedImagesContainer) {
+      notSelectedImagesContainer.innerHTML = "";
+      notSelected.forEach(src => {
+        const img = document.createElement("img");
+        img.src = src;
+        notSelectedImagesContainer.appendChild(img);
+      });
+    }
+
+    // tab1のみ「反映」ボタン
+    if (enableNotSelected && selected.length > 0) {
+      const reflectBtn = document.createElement("button");
+      reflectBtn.textContent = "反映";
+      reflectBtn.classList.add("reflectBtn");
+      reflectBtn.style.display = "block";
+      reflectBtn.style.width = "89%";
+      reflectBtn.style.marginTop = "10px";
+      reflectBtn.style.background = "#28a745";
+      reflectBtn.style.color = "white";
+      reflectBtn.style.border = "none";
+      reflectBtn.style.borderRadius = "6px";
+      reflectBtn.style.padding = "6px 0";
+      reflectBtn.style.cursor = "pointer";
+
+      reflectBtn.addEventListener("click", () => {
+        allImages = [...selected];
         renderListAndAllImages();
-    });
-
-    // ランダム表示ボタン
-    showButton.addEventListener("click", () => {
-        const count = parseInt(countInput.value);
-        if (isNaN(count) || count <= 0) return; // alert削除
-        if (count > allImages.length) return;
-
-        const shuffled = [...allImages].sort(() => Math.random() - 0.5);
-        const selected = shuffled.slice(0, count);
-        const notSelected = enableNotSelected ? shuffled.slice(count) : [];
-
-        // 生存選手表示
         selectedImagesContainer.innerHTML = "";
-        selected.forEach(src => {
-            const img = document.createElement("img");
-            img.src = src;
-            selectedImagesContainer.appendChild(img);
-        });
+        notSelectedImagesContainer.innerHTML = "";
+      });
 
-        // tab2のみ「チームメンバーに追加」ボタン
-        if (!enableNotSelected && selected.length > 0) {
-            const existingBtn = selectedImagesContainer.querySelector(".addAllBtn");
-            if (existingBtn) existingBtn.remove();
+      selectedImagesContainer.appendChild(reflectBtn);
+    }
+  });
 
-            const addBtn = document.createElement("button");
-            addBtn.textContent = "チームメンバーに追加";
-            addBtn.classList.add("addAllBtn");
-            addBtn.style.display = "block";
-            addBtn.style.width = "89%";
-            addBtn.style.marginTop = "10px";
-
-            addBtn.addEventListener("click", () => {
-                // tab1 にまとめて追加（POPUPなし）
-                const tab1 = document.getElementById("tab1");
-                const imageSelect1 = tab1.querySelector(".imageSelect");
-                const addImageButton1 = tab1.querySelector(".addImageButton");
-                selected.forEach(src => {
-                    imageSelect1.value = src;
-                    addImageButton1.click();
-                });
-                switchTab("tab1");
-            });
-
-            selectedImagesContainer.appendChild(addBtn);
-        }
-
-        // tab1のみ引退選手表示
-        if (enableNotSelected && notSelectedImagesContainer) {
-            notSelectedImagesContainer.innerHTML = "";
-            notSelected.forEach(src => {
-                const img = document.createElement("img");
-                img.src = src;
-                notSelectedImagesContainer.appendChild(img);
-            });
-        }
-    });
-
-    return { allImages, renderListAndAllImages };
+  return { allImages, renderListAndAllImages, addImageByValue };
 }
 
 // =======================
-// タブごとに初期化
+// 各タブ初期化
 // =======================
+const tabsData = {};
 document.querySelectorAll(".tab-content").forEach(tab => {
-    if (tab.id === "tab2") {
-        setupTab(tab, false); // タブ2は引退欄なし
-    } else {
-        const tab1Data = setupTab(tab, true);  // タブ1は引退欄あり
-        window.allImagesTab1 = tab1Data.allImages;
-        window.renderTab1 = tab1Data.renderListAndAllImages;
-    }
+  tabsData[tab.id] = setupTab(tab, tab.id === "tab1");
 });
