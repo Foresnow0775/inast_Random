@@ -245,11 +245,12 @@ function setupTab(tabElement, enableNotSelected = true) {
     if (enableNotSelected && selected.length > 0) {
       const reflectBtn = document.createElement("button");
       reflectBtn.textContent = "反映";
+      reflectBtn.style.fontWeight = "bold";
       reflectBtn.classList.add("reflectBtn");
       reflectBtn.style.display = "block";
       reflectBtn.style.width = "89%";
       reflectBtn.style.marginTop = "10px";
-      reflectBtn.style.background = "#28a745";
+      reflectBtn.style.background = "#0078d7";
       reflectBtn.style.color = "white";
       reflectBtn.style.border = "none";
       reflectBtn.style.borderRadius = "6px";
