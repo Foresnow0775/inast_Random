@@ -1,3 +1,20 @@
+function playSound(type = "click") {
+  const sounds = {
+    add: "sounds/01_add.wav",
+    delete: "sounds/02_delete.wav",
+    click: "sounds/03_click.wav",
+    confirm: "sounds/04_confirm.wav"
+  };
+  const audio = new Audio(sounds[type] || sounds.click);
+  audio.volume = 0.8; // 音量調整（0〜1）
+
+  // ✅ 再生を非同期化（ブラウザ制限対策）
+  setTimeout(() => {
+    audio.currentTime = 0;
+    audio.play().catch(err => console.log("Audio play blocked:", err));
+  }, 0);
+}
+
 // =======================
 // タブ切り替え
 // =======================
@@ -64,6 +81,7 @@ function setupTab(tabElement, enableNotSelected = true) {
       const removeBtn = document.createElement("button");
       removeBtn.textContent = "❌";
       removeBtn.addEventListener("click", () => {
+        playSound("delete");
         allImages.splice(index, 1);
         renderListAndAllImages();
       });
@@ -158,6 +176,12 @@ function setupTab(tabElement, enableNotSelected = true) {
   input.addEventListener("focus", () => updateSelect());
   updateSelect();
 
+  if (countInput) {
+    countInput.addEventListener("input", () => {
+      playSound("click");
+    });
+  }
+
   // =======================
   // ボタン動作
   // =======================
@@ -168,10 +192,12 @@ function setupTab(tabElement, enableNotSelected = true) {
   }
 
   addImageButton.addEventListener("click", () => {
+    playSound("add");
     addImageByValue(imageSelect.value);
   });
 
   addAllButton.addEventListener("click", () => {
+    playSound("add");
     const visibleOptions = Array.from(imageSelect.options)
       .map(opt => opt.value)
       .filter(v => v);
@@ -200,6 +226,7 @@ function setupTab(tabElement, enableNotSelected = true) {
     }
 
   showButton.addEventListener("click", () => {
+    playSound("confirm");
     const count = parseInt(countInput.value);
     if (isNaN(count) || count <= 0) return;
     if (count > allImages.length) return;
@@ -225,6 +252,7 @@ function setupTab(tabElement, enableNotSelected = true) {
       addBtn.style.marginTop = "10px";
 
       addBtn.addEventListener("click", () => {
+        playSound("confirm"); // ←これが確実に鳴る
         selected.forEach(src => tabsData["tab1"].addImageByValue(src));
         switchTab("tab1");
       });
@@ -258,6 +286,7 @@ function setupTab(tabElement, enableNotSelected = true) {
       reflectBtn.style.cursor = "pointer";
 
       reflectBtn.addEventListener("click", () => {
+        playSound("confirm"); // ←同じく最初に
         allImages = [...selected];
         renderListAndAllImages();
         selectedImagesContainer.innerHTML = "";
